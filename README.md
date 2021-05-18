@@ -8,7 +8,7 @@ git #My Shop Application
 * Update product - use PUT('/products/:id')
 * Delete product - use DELETE('/products/:id')
 
-* Hosting link: 
+* Hosting link: https://my-shop--app.herokuapp.com/
 
 **TODO**
 * Set up Mongoose
