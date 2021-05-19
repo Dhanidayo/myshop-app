@@ -47,7 +47,7 @@ app.post('/products', function(req, res) {
         tag: req.body.tag
     }, (err, newProduct) => {
         if (err) {
-            return res.status(500).json({ message: err })
+            return res.status(500).json({ message: err.message })
         }else {
             return res.status(200).json({ message: "Product info created successfully", data: newProduct })
         }
@@ -59,7 +59,7 @@ app.post('/products', function(req, res) {
 app.get('/products', (req, res) => {
     Product.find({}, (err, products) => {
         if (err) {
-            return res.status(500).json({ message: err })
+            return res.status(500).json({ message: err.message })
         }else{
             return res.status(200).json({ message: "Fetched Products successfully", data: products })
         }
@@ -70,7 +70,7 @@ app.get('/products', (req, res) => {
 app.get('/products/:id', (req, res) => {
     Product.findById(req.params.id, (err, product) => {
         if (err) {
-            return res.status(500).json({ message: err })
+            return res.status(500).json({ message: err.message })
         } else if (!product) {
             return res.status(404).json({ message: "Oops! Product cannot be found" })
         } else {
@@ -79,20 +79,24 @@ app.get('/products/:id', (req, res) => {
     })
 })
 
+
 //update a product info
 app.put('/products/:id', (req, res) => {
+    const obj1 = {};
+    if (req.body.purchaseCount) {
+        obj1.purchaseCount = req.body.purchaseCount;
+    }
     Product.findByIdAndUpdate(req.params.id, {
-        purchaseCount: req.body.purchaseCount,
-        tag: req.body.tag
-    }, (err, product) => {
+        $set: obj1
+    }, {new: true}, (err, product) => {
         if (err) {
-            return res.status(500).json({ message: err })
+            return res.status(500).json({ message: err.message })
         } else if (!product) {
             return res.status(404).json({ message: "Oops! Product cannot be found" })
         }else{
             product.save((err, savedProduct) => {
                 if (err) {
-                    return res.status(400).json({ message: err })
+                    return res.status(400).json({ message: err.message })
                 } else {
                     return res.status(200).json({ message: "Product info updated successfully", data: product })
                 }
@@ -105,7 +109,7 @@ app.put('/products/:id', (req, res) => {
 app.delete('/products/:id', (req, res) => {
     Product.findByIdAndDelete(req.params.id, (err, product) => {
         if (err) {
-            return res.status(500).json({ message: err })
+            return res.status(500).json({ message: err.message })
         } else if (!product) {
             return res.status(404).json({ message: "Oops! Product cannot be found" })
         } else {
