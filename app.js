@@ -34,6 +34,11 @@ const productSchema = new mongoose.Schema({
 })
 const Product = mongoose.model('Product', productSchema);
 
+//redirect base link to products 
+app.get('/', (req, res) => {
+    res.redirect('/products');
+})
+
 //create a new product info
 app.post('/products', function(req, res) {
     Product.create({
